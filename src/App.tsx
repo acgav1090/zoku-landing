@@ -122,6 +122,10 @@ function AnimatedKPI({ value }: { value: string }) {
 }
 
 function Navbar({ onOpenModal }: { onOpenModal: () => void }) {
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  const handleLinkClick = () => setMenuOpen(false)
+
   return (
     <nav className="navbar">
       <div className="navbar-inner">
@@ -129,13 +133,21 @@ function Navbar({ onOpenModal }: { onOpenModal: () => void }) {
           <span className="logo-jp">ゾク</span>
           <span className="logo-text">ZOKU</span>
         </a>
-        <div className="nav-links">
-          <a href="#product">Product</a>
-          <a href="#how-it-works">How It Works</a>
-          <a href="#creators">For Creators</a>
-          <a href="#faq">FAQ</a>
+        <div className={`nav-links ${menuOpen ? 'nav-links-open' : ''}`}>
+          <a href="#product" onClick={handleLinkClick}>Product</a>
+          <a href="#how-it-works" onClick={handleLinkClick}>How It Works</a>
+          <a href="#creators" onClick={handleLinkClick}>For Creators</a>
+          <a href="#faq" onClick={handleLinkClick}>FAQ</a>
+          <button className="btn btn-cta nav-mobile-cta" onClick={() => { handleLinkClick(); onOpenModal(); }}>JOIN EARLY ACCESS →</button>
         </div>
-        <button className="btn btn-cta" onClick={onOpenModal}>JOIN EARLY ACCESS →</button>
+        <button className="btn btn-cta nav-desktop-cta" onClick={onOpenModal}>JOIN EARLY ACCESS →</button>
+        <button
+          className={`hamburger ${menuOpen ? 'hamburger-open' : ''}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu"
+        >
+          <span /><span /><span />
+        </button>
       </div>
     </nav>
   )

@@ -209,9 +209,75 @@
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 640px) {
-  .modal-top,
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal-card {
+    max-width: 100%;
+    border-radius: 20px 20px 0 0;
+    max-height: 92vh;
+    animation: modal-sheet-in 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  @keyframes modal-sheet-in {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+
+  .modal-header {
+    padding: 12px 20px 0;
+    justify-content: center;
+  }
+
+  .modal-header::before {
+    content: '';
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
+  .modal-top {
+    padding: 12px 20px 0;
+  }
+
+  .modal-title {
+    font-size: 22px;
+  }
+
+  .modal-subtitle {
+    font-size: 13px;
+  }
+
   .modal-form {
-    padding-left: 24px;
-    padding-right: 24px;
+    padding: 20px 20px 0;
+    gap: 14px;
+  }
+
+  .modal-input {
+    height: 44px;
+    font-size: 13px;
+  }
+
+  .modal-pill {
+    height: 40px;
+    font-size: 10px;
+  }
+
+  .modal-cta-section {
+    padding: 20px 20px 32px;
+  }
+
+  .modal-cta-btn {
+    height: 48px;
+    font-size: 13px;
   }
 }

@@ -868,6 +868,43 @@
   }
 }
 
+/* ===== HAMBURGER (hidden on desktop) ===== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  z-index: 102;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-h);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.hamburger-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-mobile-cta {
+  display: none;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .navbar-inner {
@@ -882,38 +919,114 @@
     display: none;
   }
 
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-desktop-cta {
+    display: none;
+  }
+
+  /* Mobile menu overlay */
+  .nav-links-open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 11, 16, 0.97);
+    z-index: 101;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    animation: modal-overlay-in 0.2s ease;
+  }
+
+  .nav-links-open a {
+    font-size: 20px;
+  }
+
+  .nav-links-open .nav-mobile-cta {
+    display: inline-flex;
+    margin-top: 16px;
+  }
+
   .hero-inner {
     grid-template-columns: 1fr;
-    gap: 48px;
+    gap: 32px;
+  }
+
+  /* Reorder: image above title on mobile */
+  .hero-visual {
+    order: -1;
   }
 
   .hero-title {
     font-size: 36px;
   }
 
+  .hero-note {
+    display: none;
+  }
+
   .section-title-large {
-    font-size: 32px;
-    margin-bottom: 48px;
+    font-size: 28px;
+    margin-bottom: 40px;
   }
 
   .problem-cards {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .problem-card {
+    padding: 24px;
+  }
+
+  .problem-kpi {
+    font-size: 36px;
   }
 
   .features-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .feature-card {
+    padding: 20px;
+  }
+
+  .feature-title {
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  .feature-desc {
+    font-size: 12px;
   }
 
   .steps-grid-v2 {
     grid-template-columns: 1fr;
+    gap: 24px;
   }
 
   .step-card-v2 {
     padding: 16px;
+    gap: 20px;
+  }
+
+  .step-num {
+    font-size: 36px;
   }
 
   .benefits-title {
-    font-size: 28px;
+    font-size: 24px;
+  }
+
+  .benefits-subtitle {
+    font-size: 14px;
   }
 
   .stagger-end,
@@ -925,30 +1038,172 @@
     max-width: 100%;
   }
 
-  .team-grid {
-    grid-template-columns: 1fr;
+  .stagger-text {
+    font-size: 13px;
   }
 
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .team-col {
+    align-items: center;
+    text-align: center;
+  }
+
+  .team-photo {
+    width: 160px;
+    height: 180px;
+  }
+
+  .team-title {
+    font-size: 28px;
+  }
+
+  .faq-question {
+    font-size: 12px;
+  }
+
+  .faq-answer {
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 640px) {
+  :root {
+    --container-padding: 0 20px;
+  }
+
   .hero {
     padding-top: 100px;
-    padding-bottom: 60px;
+    padding-bottom: 48px;
+  }
+
+  .hero-inner {
+    padding: 0 20px;
+    gap: 24px;
+  }
+
+  .hero-badge {
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
   }
 
   .hero-title {
-    font-size: 28px;
+    font-size: 24px;
+  }
+
+  .hero-subtitle {
+    font-size: 13px;
+    margin-bottom: 24px;
   }
 
   .hero-buttons {
     flex-direction: column;
+    gap: 12px;
   }
 
+  .hero-buttons .btn-lg {
+    padding: 14px 24px;
+    font-size: 13px;
+  }
+
+  .section-title-large {
+    font-size: 22px;
+    margin-bottom: 32px;
+  }
+
+  .problem-kpi {
+    font-size: 32px;
+  }
+
+  .problem-card-title {
+    font-size: 13px;
+  }
+
+  .problem-card p {
+    font-size: 12px;
+  }
+
+  .problem-tagline {
+    font-size: 14px;
+  }
+
+  .feature-card {
+    padding: 16px;
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+
+  .feature-title {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+
+  .feature-desc {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .benefits-title {
+    font-size: 22px;
+  }
+
+  .output-label {
+    font-size: 12px;
+  }
+
+  .output-text {
+    font-size: 13px;
+  }
+
+  .team-section .container {
+    gap: 32px;
+  }
+
+  .team-photo {
+    width: 140px;
+    height: 160px;
+  }
+
+  .team-name {
+    font-size: 14px;
+  }
+
+  .team-bio {
+    font-size: 10px;
+  }
+
+  .cta-subtitle {
+    font-size: 14px;
+  }
 
   .footer-inner {
     flex-direction: column;
     gap: 16px;
     text-align: center;
+  }
+
+  .navbar-inner {
+    padding: 12px 20px;
+  }
+
+  .crt-metadata-inner {
+    padding: 6px 20px;
+  }
+
+  .logo-jp {
+    font-size: 18px;
+  }
+
+  .logo-text {
+    font-size: 18px;
   }
 }
