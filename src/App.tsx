@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import './App.css'
 import CRTEffect from './components/CRTEffect'
 import DemoModal from './components/DemoModal'
+import { translations, type Lang } from './i18n'
 
 /* ===== SHARED INTERSECTION OBSERVER ===== */
 const revealCallbacks = new WeakMap<Element, (isIntersecting: boolean) => void>()
@@ -121,8 +122,9 @@ function AnimatedKPI({ value }: { value: string }) {
   return <span ref={ref} className="problem-kpi">{display}</span>
 }
 
-function Navbar({ onOpenModal }: { onOpenModal: () => void }) {
+function Navbar({ onOpenModal, lang }: { onOpenModal: () => void; lang: Lang }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const t = translations[lang]
 
   const handleLinkClick = () => setMenuOpen(false)
 
@@ -130,17 +132,16 @@ function Navbar({ onOpenModal }: { onOpenModal: () => void }) {
     <nav className="navbar">
       <div className="navbar-inner">
         <a href="/" className="logo">
-          <span className="logo-jp">ゾク</span>
-          <span className="logo-text">ZOKU</span>
+          <img src="/img/Zoku_Logo_Horizontal.svg" alt="Zoku" className="logo-img" />
         </a>
         <div className={`nav-links ${menuOpen ? 'nav-links-open' : ''}`}>
-          <a href="#product" onClick={handleLinkClick}>Product</a>
-          <a href="#how-it-works" onClick={handleLinkClick}>How It Works</a>
-          <a href="#creators" onClick={handleLinkClick}>For Creators</a>
-          <a href="#faq" onClick={handleLinkClick}>FAQ</a>
-          <button className="btn btn-cta nav-mobile-cta" onClick={() => { handleLinkClick(); onOpenModal(); }}>JOIN EARLY ACCESS →</button>
+          <a href="#product" onClick={handleLinkClick}>{t.navProduct}</a>
+          <a href="#how-it-works" onClick={handleLinkClick}>{t.navHowItWorks}</a>
+          <a href="#creators" onClick={handleLinkClick}>{t.navCreators}</a>
+          <a href="#faq" onClick={handleLinkClick}>{t.navFaq}</a>
+          <button className="btn btn-cta nav-mobile-cta" onClick={() => { handleLinkClick(); onOpenModal(); }}>{t.navCta}</button>
         </div>
-        <button className="btn btn-cta nav-desktop-cta" onClick={onOpenModal}>JOIN EARLY ACCESS →</button>
+        <button className="btn btn-cta nav-desktop-cta" onClick={onOpenModal}>{t.navCta}</button>
         <button
           className={`hamburger ${menuOpen ? 'hamburger-open' : ''}`}
           onClick={() => setMenuOpen(!menuOpen)}
@@ -153,37 +154,28 @@ function Navbar({ onOpenModal }: { onOpenModal: () => void }) {
   )
 }
 
-function Hero({ onOpenModal }: { onOpenModal: () => void }) {
+function Hero({ onOpenModal, lang }: { onOpenModal: () => void; lang: Lang }) {
   const contentRef = useScrollReveal<HTMLDivElement>()
   const visualRef = useScrollReveal<HTMLDivElement>()
+  const t = translations[lang]
 
   return (
     <section className="hero">
       <div className="hero-inner">
         <div ref={contentRef} className="hero-content reveal-fade-up">
-          <p className="hero-badge">Welcome to the Zoku.tv</p>
+          <p className="hero-badge">{t.heroBadge}</p>
           <h1 className="hero-title">
-            TRANSFORM YOUR STREAM INTO A COMMUNITY BATTLE ARENA.
+            {t.heroTitle}
           </h1>
           <p className="hero-subtitle">
-            Zoku transforms passive viewers into active communities that compete through
-            interactive live battles, leaderboards, and recurring formats.
+            {t.heroSubtitle}
           </p>
           <div className="hero-buttons">
-            <div className="hero-btn-group">
-              <button className="btn btn-cta btn-lg" onClick={onOpenModal}>
-                JOIN EARLY ACCESS →
-              </button>
-              <span className="btn-caption">Early access for creators</span>
-            </div>
-            <div className="hero-btn-group">
-              <button className="btn btn-outline btn-lg" onClick={onOpenModal}>
-                Join the Waitlist
-              </button>
-              <span className="btn-caption">Limited beta</span>
-            </div>
+            <button className="btn btn-cta btn-lg" onClick={onOpenModal}>
+              {t.heroCta}
+            </button>
           </div>
-          <p className="hero-note">For creators, agencies, and partners</p>
+          <p className="hero-note">{t.heroNote}</p>
         </div>
         <div ref={visualRef} className="hero-visual reveal-fade-up reveal-delay-1">
           <img
@@ -197,23 +189,12 @@ function Hero({ onOpenModal }: { onOpenModal: () => void }) {
   )
 }
 
-function ProblemSection() {
+function ProblemSection({ lang }: { lang: Lang }) {
+  const t = translations[lang]
   const problems = [
-    {
-      kpi: '12M+',
-      title: 'STREAMERS',
-      description: "Everyone is fighting for attention. Standing out has never been harder."
-    },
-    {
-      kpi: '560M+',
-      title: 'VIEWERS',
-      description: "Most viewers are passive. They watch, but don't interact."
-    },
-    {
-      kpi: '<10%',
-      title: 'ENGAGEMENT',
-      description: "Streaming lacks formats that turn viewers into active players."
-    }
+    { kpi: '12M+', title: t.problemStreamersTitle, description: t.problemStreamersDesc },
+    { kpi: '560M+', title: t.problemViewersTitle, description: t.problemViewersDesc },
+    { kpi: '<10%', title: t.problemEngagementTitle, description: t.problemEngagementDesc }
   ]
 
   const titleRef = useScrollReveal<HTMLHeadingElement>()
@@ -224,8 +205,8 @@ function ProblemSection() {
     <section className="problem-section">
       <div className="container">
         <h2 ref={titleRef} className="section-title-large neon-blue reveal-fade-up">
-          STREAMING IS MASSIVE!<br />
-          ENGAGEMENT IS BROKEN
+          {t.problemTitle1}<br />
+          {t.problemTitle2}
         </h2>
         <div ref={cardsRef} className="problem-cards stagger-children">
           {problems.map((p, i) => (
@@ -237,7 +218,7 @@ function ProblemSection() {
           ))}
         </div>
         <p ref={taglineRef} className="problem-tagline reveal-fade-up">
-          <em>Your viewers shouldn't just watch. They should play.</em>
+          {t.problemTagline}
         </p>
       </div>
     </section>
@@ -304,28 +285,13 @@ function IconGamepad() {
   )
 }
 
-function FeaturesSection() {
+function FeaturesSection({ lang }: { lang: Lang }) {
+  const t = translations[lang]
   const features = [
-    {
-      icon: <IconSwords />,
-      title: 'Community Battles',
-      description: 'Pick a side. Your viewers become players in real-time team vs team showdowns between streamers.'
-    },
-    {
-      icon: <IconLoop />,
-      title: 'Real-Time Interaction',
-      description: 'Chat commands, abilities, and live actions that let viewers shape the outcome as it happens.'
-    },
-    {
-      icon: <IconChart />,
-      title: 'Rankings & Progression',
-      description: 'Leaderboards, XP, and rewards that track every viewer\'s journey and keep them coming back.'
-    },
-    {
-      icon: <IconGamepad />,
-      title: 'Plug & Play',
-      description: 'Connect your channel in seconds. No setup friction, no complex config. Works with Twitch, YouTube, Kick and more.'
-    }
+    { icon: <IconSwords />, title: t.featureBattlesTitle, description: t.featureBattlesDesc },
+    { icon: <IconLoop />, title: t.featureInteractionTitle, description: t.featureInteractionDesc },
+    { icon: <IconChart />, title: t.featureRankingsTitle, description: t.featureRankingsDesc },
+    { icon: <IconGamepad />, title: t.featurePlugPlayTitle, description: t.featurePlugPlayDesc }
   ]
 
   const titleRef = useScrollReveal<HTMLHeadingElement>()
@@ -335,7 +301,7 @@ function FeaturesSection() {
     <section id="product" className="features-section">
       <div className="container">
         <h2 ref={titleRef} className="section-title-large neon-rose reveal-fade-up">
-          EVERYTHING YOU NEED TO TURN STREAMS INTO ARENAS
+          {t.featuresTitle}
         </h2>
         <div ref={gridRef} className="features-grid stagger-children">
           {features.map((f, i) => (
@@ -351,12 +317,13 @@ function FeaturesSection() {
   )
 }
 
-function HowItWorks() {
+function HowItWorks({ lang }: { lang: Lang }) {
+  const t = translations[lang]
   const steps = [
-    { num: '01', title: 'Create a Battle', desc: 'Link your Twitch, YouTube, or Kick channel in seconds.', img: '/step1.png', imgBorder: false },
-    { num: '02', title: 'Support Your Streamer', desc: 'The viewers select their team.', img: '/step2.png', imgBorder: true },
-    { num: '03', title: 'Live Battle', desc: 'The fight between the communities begins!', img: '/image-1.png', imgBorder: false },
-    { num: '04', title: 'Best Community Wins!', desc: 'One community wins the match, the leaderboard updates.', img: '/step4.png', imgBorder: false }
+    { num: '01', title: t.howStep1Title, desc: t.howStep1Desc, img: '/step1.png', imgBorder: false },
+    { num: '02', title: t.howStep2Title, desc: t.howStep2Desc, img: '/step2.png', imgBorder: true },
+    { num: '03', title: t.howStep3Title, desc: t.howStep3Desc, img: '/image-1.png', imgBorder: false },
+    { num: '04', title: t.howStep4Title, desc: t.howStep4Desc, img: '/step4.png', imgBorder: false }
   ]
 
   const titleRef = useScrollReveal<HTMLHeadingElement>()
@@ -366,7 +333,7 @@ function HowItWorks() {
     <section id="how-it-works" className="how-section">
       <div className="container">
         <h2 ref={titleRef} className="section-title-large neon-blue reveal-fade-up">
-          FROM STREAM TO ARENA IN 4 STEPS
+          {t.howTitle}
         </h2>
         <div ref={gridRef} className="steps-grid-v2 stagger-children">
           {steps.map((s, i) => (
@@ -385,11 +352,12 @@ function HowItWorks() {
   )
 }
 
-function BenefitsSection({ onOpenModal }: { onOpenModal: () => void }) {
+function BenefitsSection({ onOpenModal, lang }: { onOpenModal: () => void; lang: Lang }) {
+  const t = translations[lang]
   const statements = [
-    { id: 'ENGAGE', text: 'TURN PASSIVE VIEWERS INTO RECURRING COMPETITORS', accent: 'cyan' },
-    { id: 'GROW', text: 'BUILD RITUALS AND RIVALRIES THAT BRING THEM BACK EVERY STREAM', accent: 'rose' },
-    { id: 'CONVERT', text: 'CREATE FORMATS BRANDS WANT TO SPONSOR', accent: 'cyan' }
+    { id: t.benefitEngage, text: t.benefitEngageText, accent: 'cyan' },
+    { id: t.benefitGrow, text: t.benefitGrowText, accent: 'rose' },
+    { id: t.benefitConvert, text: t.benefitConvertText, accent: 'cyan' }
   ]
 
   const titleBlockRef = useScrollReveal<HTMLDivElement>()
@@ -402,12 +370,12 @@ function BenefitsSection({ onOpenModal }: { onOpenModal: () => void }) {
       <div className="container">
         <div ref={titleBlockRef} className="benefits-title-block reveal-fade-up">
           <h2 className="benefits-title">
-            <span className="neon-blue">YOUR COMMUNITY</span>
+            <span className="neon-blue">{t.benefitsTitle1}</span>
             <br />
-            <span className="neon-rose">YOUR COMPETITIVE ADVANTAGE</span>
+            <span className="neon-rose">{t.benefitsTitle2}</span>
           </h2>
           <p className="benefits-subtitle">
-            Your community is more than an audience. It's a competitive force. Whether you're building a weekly rivalry or a one-off event, Zoku turns every stream into a battleground.
+            {t.benefitsSubtitle}
           </p>
         </div>
         <div ref={cardsRef} className="staggered-cards stagger-children-slide">
@@ -422,15 +390,16 @@ function BenefitsSection({ onOpenModal }: { onOpenModal: () => void }) {
         </div>
         <div ref={outputRef} className="benefits-output reveal-fade-up">
           <span className="output-label">&gt;&gt;&gt;&gt; OUTPUT:</span>
-          <span className="output-text">&gt;&gt;&gt; A COMMUNITY THAT FIGHTS, RETURNS, AND GROWS.</span>
+          <span className="output-text">{t.benefitOutput}</span>
         </div>
-        <button ref={ctaRef} className="btn btn-cta reveal-scale-up" onClick={onOpenModal}>JOIN EARLY ACCESS →</button>
+        <button ref={ctaRef} className="btn btn-cta reveal-scale-up" onClick={onOpenModal}>{t.navCta}</button>
       </div>
     </section>
   )
 }
 
-function TeamSection() {
+function TeamSection({ lang }: { lang: Lang }) {
+  const t = translations[lang]
   const members = [
     {
       name: 'David Chamma - CEO, CFO',
@@ -467,7 +436,7 @@ function TeamSection() {
   return (
     <section className="team-section">
       <div className="container">
-        <h2 ref={titleRef} className="team-title reveal-fade-up">OUR TEAM</h2>
+        <h2 ref={titleRef} className="team-title reveal-fade-up">{t.teamTitle}</h2>
         <div ref={gridRef} className="team-grid stagger-children">
           {members.map((m, i) => (
             <div key={i} className="team-col">
@@ -485,23 +454,24 @@ function TeamSection() {
   )
 }
 
-function FAQ() {
+function FAQ({ lang }: { lang: Lang }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const t = translations[lang]
   const titleRef = useScrollReveal<HTMLHeadingElement>()
   const listRef = useStaggerReveal<HTMLDivElement>()
 
   const questions = [
-    { q: 'Who is Zoku for?', a: 'Zoku is built for streamers, content creators, agencies, and brands who want to transform passive viewers into engaged, competitive communities.' },
-    { q: 'Do viewers need to install anything?', a: 'No! Viewers participate directly through chat commands and browser overlays. Zero friction, instant engagement.' },
-    { q: 'Is it only for gaming?', a: 'Not at all. While gaming communities love it, Zoku works for any live content — talk shows, music streams, sports watch parties, and more.' },
-    { q: 'Can it support sponsored formats?', a: 'Yes. Zoku supports branded battles, sponsored events, and custom integrations for agencies and brands looking to activate streaming audiences.' },
-    { q: 'How much does it cost?', a: 'Zoku is free during the beta period. We will introduce premium features for power users and agencies in the future.' }
+    { q: t.faq1Q, a: t.faq1A },
+    { q: t.faq2Q, a: t.faq2A },
+    { q: t.faq3Q, a: t.faq3A },
+    { q: t.faq4Q, a: t.faq4A },
+    { q: t.faq5Q, a: t.faq5A }
   ]
 
   return (
     <section id="faq" className="faq-section">
       <div className="container">
-        <h2 ref={titleRef} className="section-title-large neon-blue reveal-fade-up">FREQUENTLY ASKED QUESTIONS</h2>
+        <h2 ref={titleRef} className="section-title-large neon-blue reveal-fade-up">{t.faqTitle}</h2>
         <div ref={listRef} className="faq-list stagger-children">
           {questions.map((item, i) => (
             <div
@@ -524,7 +494,8 @@ function FAQ() {
   )
 }
 
-function FinalCTA({ onOpenModal }: { onOpenModal: () => void }) {
+function FinalCTA({ onOpenModal, lang }: { onOpenModal: () => void; lang: Lang }) {
+  const t = translations[lang]
   const titleRef = useScrollReveal<HTMLHeadingElement>()
   const subtitleRef = useScrollReveal<HTMLParagraphElement>()
   const buttonsRef = useScrollReveal<HTMLDivElement>()
@@ -533,19 +504,18 @@ function FinalCTA({ onOpenModal }: { onOpenModal: () => void }) {
     <section id="cta" className="final-cta">
       <div className="container">
         <h2 ref={titleRef} className="section-title-large neon-rose reveal-fade-up">
-          BRING COMPETITIVE ENERGY<br />
-          TO YOUR COMMUNITY
+          {t.ctaTitle1}<br />
+          {t.ctaTitle2}
         </h2>
         <p ref={subtitleRef} className="cta-subtitle reveal-fade-up reveal-delay-1">
-          Join the creators and communities building the future
-          of interactive live entertainment.
+          {t.ctaSubtitle}
         </p>
         <div ref={buttonsRef} className="hero-buttons reveal-scale-up reveal-delay-2" style={{ justifyContent: 'center' }}>
           <button className="btn btn-cta btn-lg" onClick={onOpenModal}>
-            JOIN EARLY ACCESS →
+            {t.heroCta}
           </button>
           <button className="btn btn-outline btn-lg" onClick={onOpenModal}>
-            Join the Waitlist
+            {t.heroWaitlist}
           </button>
         </div>
       </div>
@@ -553,29 +523,32 @@ function FinalCTA({ onOpenModal }: { onOpenModal: () => void }) {
   )
 }
 
-function Footer() {
+function Footer({ lang }: { lang: Lang }) {
+  const t = translations[lang]
   return (
     <footer className="footer">
       <div className="footer-inner">
         <a href="/" className="logo">
-          <span className="logo-jp">ゾク</span>
-          <span className="logo-text">ZOKU</span>
+          <img src="/img/Zoku_Logo_Horizontal.svg" alt="Zoku" className="logo-img" />
         </a>
         <div className="footer-right">
-          <span className="beta-badge">BETA</span>
-          <span>© 2026 Zoku.tv. All rights reserved.</span>
+          <span className="beta-badge">{t.footerBeta}</span>
+          <span>{t.footerCopyright}</span>
         </div>
       </div>
     </footer>
   )
 }
 
-function CRTMetadata() {
+function CRTMetadata({ lang, onToggleLang }: { lang: Lang; onToggleLang: () => void }) {
+  const t = translations[lang]
   return (
     <div className="crt-metadata">
       <div className="crt-metadata-inner">
-        <span className="crt-label crt-label-left">ストリーム・アリーナ</span>
-        <span className="crt-label crt-label-right">English</span>
+        <span className="crt-label crt-label-left">{t.crtLabel}</span>
+        <button className="crt-label crt-label-right crt-lang-toggle" onClick={onToggleLang}>
+          {t.langToggle}
+        </button>
       </div>
     </div>
   )
@@ -583,24 +556,26 @@ function CRTMetadata() {
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [lang, setLang] = useState<Lang>('fr')
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
+  const toggleLang = () => setLang(prev => prev === 'fr' ? 'en' : 'fr')
 
   return (
     <>
       <CRTEffect />
-      <CRTMetadata />
-      <Navbar onOpenModal={openModal} />
-      <Hero onOpenModal={openModal} />
-      <ProblemSection />
-      <FeaturesSection />
-      <HowItWorks />
-      <BenefitsSection onOpenModal={openModal} />
-      <TeamSection />
-      <FAQ />
-      <FinalCTA onOpenModal={openModal} />
-      <Footer />
-      <DemoModal isOpen={isModalOpen} onClose={closeModal} />
+      <CRTMetadata lang={lang} onToggleLang={toggleLang} />
+      <Navbar onOpenModal={openModal} lang={lang} />
+      <Hero onOpenModal={openModal} lang={lang} />
+      <ProblemSection lang={lang} />
+      <FeaturesSection lang={lang} />
+      <HowItWorks lang={lang} />
+      <BenefitsSection onOpenModal={openModal} lang={lang} />
+      <TeamSection lang={lang} />
+      <FAQ lang={lang} />
+      <FinalCTA onOpenModal={openModal} lang={lang} />
+      <Footer lang={lang} />
+      <DemoModal isOpen={isModalOpen} onClose={closeModal} lang={lang} />
     </>
   )
 }

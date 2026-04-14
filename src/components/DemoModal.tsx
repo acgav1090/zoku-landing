@@ -1,22 +1,30 @@
 import { useState, useEffect } from 'react'
 import './DemoModal.css'
+import { translations, type Lang } from '../i18n'
 
 type Profile = 'creator' | 'viewer' | 'other' | null
-
-const CREATOR_SIZES = ['< 100', '100 – 1K', '1K – 10K', '10K+']
-const VIEWER_FREQUENCIES = ['DAILY', 'FEW TIMES A WEEK', 'OCCASIONALLY']
 
 interface Props {
   isOpen: boolean
   onClose: () => void
+  lang: Lang
 }
 
-export default function DemoModal({ isOpen, onClose }: Props) {
+export default function DemoModal({ isOpen, onClose, lang }: Props) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [profile, setProfile] = useState<Profile>(null)
   const [qualifier, setQualifier] = useState<string | null>(null)
   const [otherText, setOtherText] = useState('')
+  const t = translations[lang]
+
+  const creatorSizes = ['< 100', '100 – 1K', '1K – 10K', '10K+']
+  const viewerFrequencies = [t.modalDaily, t.modalFewTimes, t.modalOccasionally]
+  const profileLabels: Record<NonNullable<Profile>, string> = {
+    creator: t.modalCreator,
+    viewer: t.modalViewer,
+    other: t.modalOther,
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -56,18 +64,18 @@ export default function DemoModal({ isOpen, onClose }: Props) {
         </div>
 
         <div className="modal-top">
-          <h2 className="modal-title">JOIN THE FIGHT!</h2>
-          <p className="modal-subtitle">Join creators and viewers shaping the future of streaming.</p>
+          <h2 className="modal-title">{t.modalTitle}</h2>
+          <p className="modal-subtitle">{t.modalSubtitle}</p>
         </div>
 
         <form id="modal-demo-form" className="modal-form" onSubmit={handleSubmit}>
 
           <div className="modal-field">
-            <label className="modal-label">NAME</label>
+            <label className="modal-label">{t.modalName}</label>
             <input
               className="modal-input"
               type="text"
-              placeholder="Your name"
+              placeholder={t.modalNamePlaceholder}
               value={name}
               onChange={e => setName(e.target.value)}
               required
@@ -75,11 +83,11 @@ export default function DemoModal({ isOpen, onClose }: Props) {
           </div>
 
           <div className="modal-field">
-            <label className="modal-label">EMAIL</label>
+            <label className="modal-label">{t.modalEmail}</label>
             <input
               className="modal-input"
               type="email"
-              placeholder="your@email.com"
+              placeholder={t.modalEmailPlaceholder}
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
@@ -87,7 +95,7 @@ export default function DemoModal({ isOpen, onClose }: Props) {
           </div>
 
           <div className="modal-field">
-            <label className="modal-label">I AM A</label>
+            <label className="modal-label">{t.modalProfile}</label>
             <div className="modal-pills">
               {(['creator', 'viewer', 'other'] as NonNullable<Profile>[]).map(p => (
                 <button
@@ -96,7 +104,7 @@ export default function DemoModal({ isOpen, onClose }: Props) {
                   className={`modal-pill ${profile === p ? 'modal-pill-active' : ''}`}
                   onClick={() => handleProfileChange(p)}
                 >
-                  {p.toUpperCase()}
+                  {profileLabels[p]}
                 </button>
               ))}
             </div>
@@ -104,9 +112,9 @@ export default function DemoModal({ isOpen, onClose }: Props) {
 
           {profile === 'creator' && (
             <div className="modal-field">
-              <label className="modal-label">HOW BIG IS YOUR AUDIENCE?</label>
+              <label className="modal-label">{t.modalAudienceSize}</label>
               <div className="modal-pills modal-pills-4">
-                {CREATOR_SIZES.map(s => (
+                {creatorSizes.map(s => (
                   <button
                     key={s}
                     type="button"
@@ -122,9 +130,9 @@ export default function DemoModal({ isOpen, onClose }: Props) {
 
           {profile === 'viewer' && (
             <div className="modal-field">
-              <label className="modal-label">HOW OFTEN DO YOU WATCH?</label>
+              <label className="modal-label">{t.modalWatchFreq}</label>
               <div className="modal-pills">
-                {VIEWER_FREQUENCIES.map(f => (
+                {viewerFrequencies.map(f => (
                   <button
                     key={f}
                     type="button"
@@ -140,10 +148,10 @@ export default function DemoModal({ isOpen, onClose }: Props) {
 
           {profile === 'other' && (
             <div className="modal-field">
-              <label className="modal-label">TELL US A BIT MORE</label>
+              <label className="modal-label">{t.modalTellMore}</label>
               <textarea
                 className="modal-input modal-textarea"
-                placeholder="What brings you here?"
+                placeholder={t.modalTellMorePlaceholder}
                 value={otherText}
                 onChange={e => setOtherText(e.target.value)}
                 rows={3}
@@ -155,9 +163,9 @@ export default function DemoModal({ isOpen, onClose }: Props) {
 
         <div className="modal-cta-section">
           <button type="submit" form="modal-demo-form" className="btn btn-cta modal-cta-btn">
-            JOIN EARLY ACCESS →
+            {t.modalCta}
           </button>
-          <p className="modal-trust">Free beta · Spots are limited</p>
+          <p className="modal-trust">{t.modalTrust}</p>
         </div>
 
       </div>

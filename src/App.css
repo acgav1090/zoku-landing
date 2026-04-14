@@ -28,27 +28,11 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 6px;
 }
 
-.logo-jp {
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 22px;
-  font-weight: 900;
-  color: #fff;
-  letter-spacing: 4px;
-  text-shadow:
-    0 0 16px #ff2d78,
-    0 0 8px #ff4d88,
-    0 0 3px #ffcce0;
-}
-
-.logo-text {
-  font-family: 'Bungee Shade', cursive;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text-h);
-  letter-spacing: 4px;
+.logo-img {
+  height: 48px;
+  width: auto;
 }
 
 .nav-links {
@@ -441,11 +425,17 @@
 }
 
 .problem-tagline {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Ticketing', var(--mono);
   text-align: center;
   font-size: 17px;
-  font-style: italic;
-  color: var(--text);
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #ffe0eb;
+  text-shadow:
+    0 0 15px rgba(255, 45, 120, 0.8),
+    0 0 35px rgba(255, 77, 136, 0.44),
+    0 0 60px rgba(255, 107, 149, 0.25);
 }
 
 /* ===== FEATURES ===== */
@@ -753,6 +743,22 @@
 
 .crt-label-left { flex: 0 0 auto; }
 .crt-label-right { flex: 0 0 auto; color: #ffd9db; }
+
+.crt-lang-toggle {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  color: #ffd9db;
+  cursor: pointer;
+  padding: 2px 6px;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+.crt-lang-toggle:hover {
+  color: #ff6b95;
+  text-shadow: 0 0 6px rgba(255, 107, 149, 0.5);
+}
 
 .crt-glow-red {
   color: #ffd9db;
@@ -1199,11 +1205,7 @@
     padding: 6px 20px;
   }
 
-  .logo-jp {
-    font-size: 18px;
-  }
-
-  .logo-text {
-    font-size: 18px;
+  .logo-img {
+    height: 38px;
   }
 }
